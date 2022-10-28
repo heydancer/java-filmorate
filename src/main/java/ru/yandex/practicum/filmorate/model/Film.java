@@ -1,14 +1,15 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
 public class Film {
 
-    @NotNull(message = "Id cannot be null")
     private int id;
 
     @NotNull(message = "Name cannot be null")
@@ -23,6 +24,6 @@ public class Film {
     private LocalDate releaseDate;
 
     @NotNull(message = "Duration cannot be null")
-    @Min(value = 1, message = "Duration should be positive")
+    @Positive(message = "Duration should be positive")
     private Integer duration;
 }
