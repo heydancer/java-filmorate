@@ -12,10 +12,12 @@ import java.time.LocalDate;
 public class FilmService extends GlobalService<Film> {
 
     @Override
-    public void validate(Film film) throws ValidationException {
+    public boolean validate(Film film) {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             log.warn("Release date cannot be earlier than December 28, 1895");
             throw new ValidationException("Failed to validate on the release date");
         }
+
+        return true;
     }
 }

@@ -37,5 +37,5 @@ public abstract class GlobalService<T> {
         return new ArrayList<>(dataMap.values());
     }
 
-    public abstract void validate(final T data);
+    public abstract boolean validate(final T data);
 }

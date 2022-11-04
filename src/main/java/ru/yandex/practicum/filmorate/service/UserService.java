@@ -8,9 +8,13 @@ import ru.yandex.practicum.filmorate.model.User;
 public class UserService extends GlobalService<User> {
 
     @Override
-    public void validate(User user) {
+    public boolean validate(User user) {
+        boolean check = true;
         if (StringUtils.isEmpty(user.getName())) {
             user.setName(user.getLogin());
+            check = false;
         }
+
+        return check;
     }
 }
