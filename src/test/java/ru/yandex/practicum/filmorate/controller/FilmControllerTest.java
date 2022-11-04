@@ -97,9 +97,9 @@ class FilmControllerTest {
         when(service.validate(film)).thenThrow(ValidationException.class);
 
         mvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isInternalServerError());
         mvc.perform(post("/films").content(body).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
