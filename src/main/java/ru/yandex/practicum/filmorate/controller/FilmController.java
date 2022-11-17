@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +17,11 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Slf4j
+@Validated
 @RestController
 @RequestMapping("/films")
 public class FilmController {
@@ -47,7 +50,7 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public Film likeFilm(@PathVariable int id, @PathVariable int userId) {
+    public Film likeFilm(@PathVariable int id, @PathVariable @Positive int userId) {
         log.info("Like the Film with id: {}", id);
 
         return filmService.addLike(id, userId);
@@ -62,7 +65,7 @@ public class FilmController {
     }
 
     @GetMapping("/popular")
-    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
+    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") @Positive int count) {
         log.info("The list of popular films returns");
 
         return filmService.getPopularFilms(count);
