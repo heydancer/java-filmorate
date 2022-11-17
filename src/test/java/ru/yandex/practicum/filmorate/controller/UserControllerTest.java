@@ -37,10 +37,20 @@ class UserControllerTest {
 
     @Test
     public void shouldReturnAllUsers() throws Exception {
-        User user1 = new User(1, "user1@yandex.ru", "User1", "Sasha",
-                LocalDate.of(1994, 4, 16));
-        User user2 = new User(2, "user2@yandex.ru", "User2", "Dima",
-                LocalDate.of(1990, 1, 10));
+        User user1 = User.builder()
+                .id(1)
+                .email("user1@yandex.ru")
+                .login("hey dancer")
+                .name("Sasha")
+                .birthday(LocalDate.of(1994, 4, 16))
+                .build();
+        User user2 = User.builder()
+                .id(2)
+                .email("user2@yandex.ru")
+                .login("User2")
+                .name("Dima")
+                .birthday(LocalDate.of(1990, 1, 10))
+                .build();
 
         when(service.getAll()).thenReturn(List.of(user1, user2));
 
@@ -61,8 +71,13 @@ class UserControllerTest {
 
     @Test
     void shouldCheckEmptyEmail() throws Exception {
-        User user = new User(1, "", "User1", "Sasha",
-                LocalDate.of(1994, 4, 16));
+        User user = User.builder()
+                .id(1)
+                .email("")
+                .login("User1")
+                .name("Sasha")
+                .birthday(LocalDate.of(1994, 4, 16))
+                .build();
 
         String body = objectMapper.writeValueAsString(user);
 
@@ -74,8 +89,13 @@ class UserControllerTest {
 
     @Test
     void shouldCheckInvalidEmail() throws Exception {
-        User user = new User(1, "invalid email", "User1", "Sasha",
-                LocalDate.of(1994, 4, 16));
+        User user = User.builder()
+                .id(1)
+                .email("Invalid email")
+                .login("User1")
+                .name("Sasha")
+                .birthday(LocalDate.of(1994, 4, 16))
+                .build();
 
         String body = objectMapper.writeValueAsString(user);
 
@@ -87,8 +107,13 @@ class UserControllerTest {
 
     @Test
     void shouldCheckEmptyLogin() throws Exception {
-        User user = new User(1, "user1@yandex.ru", "", "Sasha",
-                LocalDate.of(1994, 4, 16));
+        User user = User.builder()
+                .id(1)
+                .email("user@yandex.ru")
+                .login("")
+                .name("Sasha")
+                .birthday(LocalDate.of(1994, 4, 16))
+                .build();
 
         String body = objectMapper.writeValueAsString(user);
 
@@ -100,8 +125,13 @@ class UserControllerTest {
 
     @Test
     void shouldCheckEmptyName() throws Exception {
-        User user = new User(1, "user1@yandex.ru", "user1", "",
-                LocalDate.of(1994, 4, 16));
+        User user = User.builder()
+                .id(1)
+                .email("user@yandex.ru")
+                .login("hey dancer")
+                .name("")
+                .birthday(LocalDate.of(1994, 4, 16))
+                .build();
 
         String body = objectMapper.writeValueAsString(user);
 
@@ -114,8 +144,13 @@ class UserControllerTest {
 
     @Test
     void shouldCheckBirthday() throws Exception {
-        User user = new User(1, "user1@yandex.ru", "user1", "Sasha",
-                LocalDate.of(3333, 3, 3));
+        User user = User.builder()
+                .id(1)
+                .email("user@yandex.ru")
+                .login("hey dancer")
+                .name("Sasha")
+                .birthday(LocalDate.of(3333, 3, 3))
+                .build();
 
         String body = objectMapper.writeValueAsString(user);
 

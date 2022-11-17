@@ -40,10 +40,22 @@ class FilmControllerTest {
 
     @Test
     public void shouldReturnAllMovies() throws Exception {
-        Film film1 = new Film(1, "Film1", "Description1",
-                LocalDate.of(1998, 9, 18), 98);
-        Film film2 = new Film(2, "Film2", "Description2",
-                LocalDate.of(1988, 7, 12), 133);
+        Film film1 = Film.builder()
+                .id(1)
+                .name("Film1")
+                .description("Description1")
+                .releaseDate(LocalDate.of(1998, 9, 18))
+                .duration(98)
+                .build();
+
+        Film film2 = Film.builder()
+                .id(2)
+                .name("Film2")
+                .description("Decription2")
+                .releaseDate(LocalDate.of(1988, 7, 12))
+                .duration(133)
+                .build();
+
 
         when(service.getAll()).thenReturn(List.of(film1, film2));
 
@@ -63,8 +75,13 @@ class FilmControllerTest {
 
     @Test
     public void shouldCheckEmptyName() throws Exception {
-        Film film = new Film(1, "", "Description",
-                LocalDate.of(1998, 9, 18), 98);
+        Film film = Film.builder()
+                .id(1)
+                .name("")
+                .description("Description")
+                .releaseDate(LocalDate.of(1998, 9, 18))
+                .duration(98)
+                .build();
 
         String body = objectMapper.writeValueAsString(film);
 
@@ -76,8 +93,13 @@ class FilmControllerTest {
 
     @Test
     public void shouldCheckLengthOfTheDescription() throws Exception {
-        Film film = new Film(1, "Film", "Description".repeat(200),
-                LocalDate.of(1998, 9, 18), 98);
+        Film film = Film.builder()
+                .id(1)
+                .name("Film")
+                .description("Description".repeat(200))
+                .releaseDate(LocalDate.of(1998, 9, 18))
+                .duration(98)
+                .build();
 
         String body = objectMapper.writeValueAsString(film);
 
@@ -89,8 +111,13 @@ class FilmControllerTest {
 
     @Test
     public void shouldCheckDateOfRelease() throws Exception {
-        Film film = new Film(1, "Film", "Description",
-                LocalDate.of(1000, 1, 1), 1);
+        Film film = Film.builder()
+                .id(1)
+                .name("Film")
+                .description("Description")
+                .releaseDate(LocalDate.of(1000, 1, 1))
+                .duration(98)
+                .build();
 
         String body = objectMapper.writeValueAsString(film);
 
@@ -104,8 +131,13 @@ class FilmControllerTest {
 
     @Test
     public void shouldCheckDuration() throws Exception {
-        Film film = new Film(1, "Film", "Description",
-                LocalDate.of(1998, 9, 18), -9999);
+        Film film = Film.builder()
+                .id(1)
+                .name("Film")
+                .description("Description")
+                .releaseDate(LocalDate.of(1998, 9, 18))
+                .duration(-9999)
+                .build();
 
         String body = objectMapper.writeValueAsString(film);
 

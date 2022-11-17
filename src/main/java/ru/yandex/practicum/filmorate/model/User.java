@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -9,9 +9,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
+@Builder
 public class User {
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
             "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -33,4 +34,5 @@ public class User {
     @PastOrPresent(message = "Birthday cannot be in future")
     private LocalDate birthday;
 
+    private Set<Integer> friends;
 }
