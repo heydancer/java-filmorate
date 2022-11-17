@@ -22,27 +22,21 @@ public class FilmService extends GlobalService<Film> {
     }
 
     public Film addLike(int filmId, int userId) {
-        Film film = inMemoryStorage.getData(filmId);
-        Set<Integer> likes = film.getLikes();
-        if (likes.contains(userId)) {
+        if (!getSetLikesById(filmId).add(userId)) {
             log.warn("Impossible to addLike. User with id: {} liked it before", userId);
             throw new NotFoundException("Add like error");
         }
-        likes.add(userId);
 
-        return film;
+        return inMemoryStorage.getData(filmId);
     }
 
     public Film removeLike(int filmId, int userId) {
-        Film film = inMemoryStorage.getData(filmId);
-        Set<Integer> likes = film.getLikes();
-        if (!likes.contains(userId)) {
+        if (!getSetLikesById(filmId).remove(userId)) {
             log.warn("Impossible to removeLike. User with {} did not leave a like", userId);
             throw new NotFoundException("Remove like error");
         }
-        likes.remove(userId);
 
-        return film;
+        return inMemoryStorage.getData(filmId);
     }
 
     public List<Film> getPopularFilms(int count) {
@@ -71,5 +65,11 @@ public class FilmService extends GlobalService<Film> {
         }
 
         return true;
+    }
+
+    private Set<Integer> getSetLikesById(int filmId) {
+        Film film = inMemoryStorage.getData(filmId);
+
+        return film.getLikes();
     }
 }
