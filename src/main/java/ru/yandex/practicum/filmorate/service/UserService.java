@@ -37,11 +37,9 @@ public class UserService extends GlobalService<User> {
     }
 
     public List<User> getFriends(int id) {
-
-        List<User> friendsList = new ArrayList<>();
-
         User user = inMemoryStorage.getData(id);
 
+        List<User> friendsList = new ArrayList<>();
         Set<Integer> friends = user.getFriends();
 
         for (Integer friendId : friends) {
