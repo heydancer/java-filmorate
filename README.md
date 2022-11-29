@@ -5,7 +5,7 @@
 ### An app for interacting with film productions.
 
 ## Database diagram
-<img alt="DB diagram" height="500" src="FilmorateDB.svg" width="900"/>
+<img alt="DB diagram" height="500" src="FilmorateDiagramDB.svg" width="900"/>
 
 ## Endpoints 
 
