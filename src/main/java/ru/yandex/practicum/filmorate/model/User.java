@@ -39,4 +39,6 @@ public class User {
     LocalDate birthday;
 
     Set<Integer> friends;
+
+    boolean status;
 }
