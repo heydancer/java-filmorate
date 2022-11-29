@@ -1,41 +1,42 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.yandex.practicum.filmorate.storage.InMemoryStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public abstract class GlobalService<T> {
-    protected final Map<Integer, T> dataMap = new HashMap<>();
-    private int nextId = 0;
 
-    public int getNextId() {
-        return ++nextId;
+    @Autowired
+    protected InMemoryStorage<T> inMemoryStorage;
+
+    public GlobalService(InMemoryStorage<T> inMemoryStorage) {
+        this.inMemoryStorage = inMemoryStorage;
     }
 
-    public T create(final T data) {
-        dataMap.put(nextId, data);
 
-        return data;
+    public T create(final T data) {
+        return inMemoryStorage.add(data);
     }
 
     public T update(final T data, final int id) {
-        if (!dataMap.containsKey(id)) {
-            log.warn("Impossible to update. ID - {} does not exist", id);
-            throw new ValidationException("Update error");
-        }
-        dataMap.put(nextId, data);
+        return inMemoryStorage.update(data, id);
+    }
 
-        return data;
+    public T removeById(final int id) {
+        return inMemoryStorage.removeData(id);
+    }
+
+    public T getById(int id) {
+        return inMemoryStorage.getData(id);
     }
 
     public List<T> getAll() {
-        return new ArrayList<>(dataMap.values());
+        return inMemoryStorage.getAll();
     }
 
     public abstract boolean validate(final T data);
+
 }

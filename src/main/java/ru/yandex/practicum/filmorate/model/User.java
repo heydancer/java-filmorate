@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
@@ -9,28 +11,32 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
-@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
+
+    static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
             "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-    private int id;
+    int id;
 
     @NotNull(message = "Email cannot be null")
     @NotBlank(message = "Email cannot be empty")
     @Email(message = "Email is not valid", regexp = EMAIL_PATTERN)
-    private String email;
+    String email;
 
     @NotNull(message = "Login cannot be null")
     @NotBlank(message = "Login cannot be empty")
-    private String login;
+    String login;
 
-    private String name;
+    String name;
 
     @NotNull(message = "Birthday cannot be null")
     @PastOrPresent(message = "Birthday cannot be in future")
-    private LocalDate birthday;
+    LocalDate birthday;
 
+    Set<Integer> friends;
 }
