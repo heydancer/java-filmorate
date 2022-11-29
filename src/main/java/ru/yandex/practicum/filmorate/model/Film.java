@@ -35,4 +35,8 @@ public class Film {
     Integer duration;
 
     Set<Integer> likes;
+
+    String genre;
+
+    String rate;
 }
