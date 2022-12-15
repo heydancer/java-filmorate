@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
@@ -15,10 +16,11 @@ import ru.yandex.practicum.filmorate.storage.user.UserDbStorage;
 
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
+@Sql(statements = "DELETE FROM films")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class FilmStorageTest {
@@ -38,7 +40,7 @@ class FilmStorageTest {
             .duration(180)
             .mpa(new Mpa(4, "R"))
             .genres(null)
-            .build();;
+            .build();
     private final Film testFilm2 = Film.builder()
             .name("Test film2")
             .description("Test description2")
@@ -46,7 +48,7 @@ class FilmStorageTest {
             .duration(180)
             .mpa(new Mpa(4, "R"))
             .genres(null)
-            .build();;
+            .build();
 
 
     @Test
