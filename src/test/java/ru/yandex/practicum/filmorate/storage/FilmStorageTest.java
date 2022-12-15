@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
@@ -66,7 +65,6 @@ class FilmStorageTest {
         Film updatedFilm = filmDbStorage.update(testFilm2, film.getId());
 
         assertThat(updatedFilm).isNotNull();
-        assertThat(updatedFilm.getId()).isEqualTo(1);
         assertThat(updatedFilm.getName()).isEqualTo("Test film2");
         assertThat(updatedFilm.getDescription()).isEqualTo("Test description2");
     }
