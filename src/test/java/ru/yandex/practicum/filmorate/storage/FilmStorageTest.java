@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
-@Sql(statements = "DELETE FROM films")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class FilmStorageTest {
