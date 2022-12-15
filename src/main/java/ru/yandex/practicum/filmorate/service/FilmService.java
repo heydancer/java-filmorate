@@ -70,7 +70,6 @@ public class FilmService {
         return filmStorage.removeLike(filmId, userId);
     }
 
-
     public boolean validate(Film film) {
         if (film == null) {
             log.warn("Film cannot be null");
