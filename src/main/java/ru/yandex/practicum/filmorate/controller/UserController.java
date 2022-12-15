@@ -20,70 +20,77 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final UserService userService;
+
+    private final UserService service;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @PostMapping
     public User addUser(@Valid @RequestBody User user) {
         log.info("User is added: {}", user);
-        userService.validate(user);
+        service.validate(user);
 
-        return userService.create(user);
+        return service.create(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
         log.info("User is updated: {}", user);
-        userService.validate(user);
+        service.validate(user);
 
-        return userService.update(user, user.getId());
+        return service.update(user, user.getId());
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public User addFriend(@PathVariable int id, @PathVariable int friendId) {
         log.info("Friend is adding : {}", friendId);
 
-        return userService.addFriend(id, friendId);
-
+        return service.addFriend(id, friendId);
     }
 
     @GetMapping
     public List<User> getAllUsers() {
         log.info("The list of all users returns");
 
-        return userService.getAll();
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public User getFilm(@PathVariable int id) {
+    public User getUser(@PathVariable int id) {
         log.info("User with id: {} getting", id);
 
-        return userService.getById(id);
+        return service.getById(id);
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getFriendList(@PathVariable int id) {
         log.info("Getting friends by User ID{}", id);
 
-        return userService.getFriends(id);
+        return service.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
     public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         log.info("Getting common friends by User ID{}", otherId);
 
-        return userService.getCommonFriends(id, otherId);
+        return service.getCommonFriends(id, otherId);
+    }
+
+    @DeleteMapping("/{id}")
+    public User deleteUser(@PathVariable int id) {
+        log.info("User with id: {} removing", id);
+
+        return service.removeUser(id);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
     public User deleteFriend(@PathVariable int id, @PathVariable int friendId) {
         log.info("User with id: {} removing from friends", id);
 
-        return userService.removeFriend(id, friendId);
+        return service.removeFriend(id, friendId);
     }
 }
 

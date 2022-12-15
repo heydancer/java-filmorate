@@ -1,87 +1,76 @@
 package ru.yandex.practicum.filmorate.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
-public class UserService extends GlobalService<User> {
-    public UserService(InMemoryStorage<User> inMemoryStorage) {
-        super(inMemoryStorage);
+public class UserService {
+
+    private final UserStorage userStorage;
+
+    @Autowired
+    public UserService(UserStorage storage) {
+        this.userStorage = storage;
     }
 
-    public User addFriend(int id, int friendId) {
-        User user = inMemoryStorage.getData(id);
-        User friend = inMemoryStorage.getData(friendId);
-
-        user.getFriends().add(friendId);
-        friend.getFriends().add(id);
-
-        return user;
+    public User create(User user) {
+        return userStorage.add(user);
     }
 
-    public User removeFriend(int id, int friendId) {
-        User user = inMemoryStorage.getData(id);
-        User friend = inMemoryStorage.getData(friendId);
+    public User update(User user, int userId) {
+        userStorage.checkUserInDb(userId);
 
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(id);
-
-        return friend;
+        return userStorage.update(user, userId);
     }
 
-    public List<User> getFriends(int id) {
-        User user = inMemoryStorage.getData(id);
+    public User addFriend(int userId, int friendId) {
+        userStorage.checkUserInDb(friendId);
 
-        List<User> friendsList = new ArrayList<>();
-        Set<Integer> friends = user.getFriends();
-
-        for (Integer friendId : friends) {
-            friendsList.add(inMemoryStorage.getData(friendId));
-        }
-
-        return friendsList;
+        return userStorage.addFriend(userId, friendId);
     }
 
-    public List<User> getCommonFriends(int id, int otherId) {
-        User user = inMemoryStorage.getData(id);
-        User otherUser = inMemoryStorage.getData(otherId);
+    public User getById(int userId) {
+        userStorage.checkUserInDb(userId);
 
-        List<User> friendsList = new ArrayList<>();
-
-        for (int friendId : user.getFriends()) {
-            for (int anotherId : otherUser.getFriends()) {
-                if (friendId == anotherId) {
-                    friendsList.add(inMemoryStorage.getData(friendId));
-                }
-            }
-        }
-
-        return friendsList;
+        return userStorage.getData(userId);
     }
 
-    @Override
-    public boolean validate(User user) {
-        boolean check = true;
+    public List<User> getAll() {
+        return userStorage.getAll();
+    }
+
+    public List<User> getFriends(int userId) {
+        return userStorage.getFriendList(userId);
+    }
+
+    public List<User> getCommonFriends(int userId, int otherId) {
+        userStorage.checkUserInDb(userId);
+        userStorage.checkUserInDb(otherId);
+
+        return userStorage.getCommonFriends(userId, otherId);
+    }
+
+    public User removeUser(int userId) {
+        userStorage.checkUserInDb(userId);
+
+        return userStorage.removeData(userId);
+    }
+
+    public User removeFriend(int userId, int friendId) {
+        userStorage.checkUserInDb(userId);
+        userStorage.checkUserInDb(friendId);
+
+        return userStorage.removeFriend(userId, friendId);
+    }
+
+    public void validate(User user) {
         if (StringUtils.isEmpty(user.getName())) {
             user.setName(user.getLogin());
-            check = false;
         }
-
-        if (user.getId() == 0) {
-            user.setId(inMemoryStorage.getNextId());
-        }
-
-        if (user.getFriends() == null) {
-            user.setFriends(new HashSet<>());
-        }
-
-        return check;
     }
 }

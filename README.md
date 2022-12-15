@@ -2,17 +2,16 @@
 
 ---
 
-### An app for interacting with film productions.
+### An app for interacting with film productions
 
 ## Database diagram
-<img alt="DB diagram" height="500" src="filmoratesDBscheme.svg" width="900"/>
+<img alt="DB diagram" height="600" src="FilmorateDiagram.svg" width="900"/>
 
 ## Endpoints 
 
 ---
 
-## Film 
-
+## Film
 
 | Method | Endpoint                  | Description               |
 |--------|---------------------------|---------------------------|
@@ -37,5 +36,22 @@
 | GET    | /users/{id}/friends                  | Get friends by user id         |
 | GET    | /users/{id}/friends/common/{otherId} | Get common friends by user id  |
 | DELETE | /users/{id}/friends/{friendId}       | Remove from friends by user id |
+| DELETE | /users/{id}                          | Remove user by id              |
+
+## Mpa
+
+| Method | Endpoint                             | Description     |
+|--------|--------------------------------------|-----------------|
+| GET    | /mpa                                 | Get all mpa     |
+| GET    | /mpa/{id}                            | Get mpa by id   |
+
+## Genre
+
+| Method | Endpoint                       | Description     |
+|--------|--------------------------------|-----------------|
+| GET    | /genre                         | Get all genres  |
+| GET    | /genre/{id}                    | Get genre by id |
+
+
 
 
