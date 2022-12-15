@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.storage;
 
 import lombok.RequiredArgsConstructor;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,38 +25,29 @@ class FilmStorageTest {
 
     private final FilmDbStorage filmDbStorage;
     private final UserDbStorage userDbStorage;
-    private User testUser;
-    private Film testFilm;
-    private Film testFilm2;
+    private final User testUser = User.builder()
+            .name("Test user")
+            .login("tester")
+            .email("testuser@yandex.ru")
+            .birthday(LocalDate.of(1994, 4, 16))
+            .build();
+    private final Film testFilm = Film.builder()
+            .name("Test film")
+            .description("Test description")
+            .releaseDate(LocalDate.of(2022, 12, 15))
+            .duration(180)
+            .mpa(new Mpa(4, "R"))
+            .genres(null)
+            .build();;
+    private final Film testFilm2 = Film.builder()
+            .name("Test film2")
+            .description("Test description2")
+            .releaseDate(LocalDate.of(2000, 10, 10))
+            .duration(180)
+            .mpa(new Mpa(4, "R"))
+            .genres(null)
+            .build();;
 
-
-    @BeforeEach
-    public void createUsers() {
-        testUser = User.builder()
-                .name("Test user")
-                .login("tester")
-                .email("testuser@yandex.ru")
-                .birthday(LocalDate.of(1994, 4, 16))
-                .build();
-
-        testFilm = Film.builder()
-                .name("Test film")
-                .description("Test description")
-                .releaseDate(LocalDate.of(2022, 12, 15))
-                .duration(180)
-                .mpa(new Mpa(4, "R"))
-                .genres(null)
-                .build();
-
-        testFilm2 = Film.builder()
-                .name("Test film2")
-                .description("Test description2")
-                .releaseDate(LocalDate.of(2000, 10, 10))
-                .duration(180)
-                .mpa(new Mpa(4, "R"))
-                .genres(null)
-                .build();
-    }
 
     @Test
     public void shouldCreateFilm() {
