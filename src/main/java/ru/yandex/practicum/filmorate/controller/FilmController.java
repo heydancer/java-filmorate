@@ -80,10 +80,9 @@ public class FilmController {
     }
 
     @DeleteMapping("/{id}")
-    public Film removeFilm(@PathVariable int id) {
+    public void removeFilm(@PathVariable int id) {
         log.info("Film with id: {} removed", id);
-
-        return filmService.removeById(id);
+        filmService.removeById(id);
     }
 
     @DeleteMapping("/{id}/like/{userId}")

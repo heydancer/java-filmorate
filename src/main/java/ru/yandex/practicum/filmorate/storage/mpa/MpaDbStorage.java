@@ -22,11 +22,9 @@ public class MpaDbStorage implements MpaStorage {
 
     @Override
     public Mpa getById(int mpaId) {
-        try {
-            return jdbcTemplate.queryForObject(MpaSqlQueries.GET_MPA, this::mapRow, mpaId);
-        } catch (DataAccessException exception) {
-            return null;
-        }
+        checkMpa(mpaId);
+
+        return jdbcTemplate.queryForObject(MpaSqlQueries.GET_MPA, this::mapRow, mpaId);
     }
 
     @Override
@@ -35,8 +33,10 @@ public class MpaDbStorage implements MpaStorage {
     }
 
     @Override
-    public void checkMpaInDb(int mpaId) {
-        if (getById(mpaId) == null) {
+    public void checkMpa(int mpaId) {
+        try {
+            jdbcTemplate.queryForObject(MpaSqlQueries.GET_MPA, this::mapRow, mpaId);
+        } catch (DataAccessException exception) {
             throw new NotFoundException("MPA with ID: " + mpaId + " not found");
         }
     }

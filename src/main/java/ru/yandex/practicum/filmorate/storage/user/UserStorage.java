@@ -15,5 +15,5 @@ public interface UserStorage extends GeneralStorage<User> {
 
     User removeFriend(final int userId, final int friendId);
 
-    void checkUserInDb(final int userId);
+    void checkUser(final int userId);
 }

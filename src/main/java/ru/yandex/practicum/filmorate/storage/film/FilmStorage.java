@@ -12,5 +12,6 @@ public interface FilmStorage extends GeneralStorage<Film> {
 
     Film removeLike(final int filmId, final int userId);
 
-    void checkFilmInDb(final int filmId);
+    void checkFilm(final int filmId);
+
 }

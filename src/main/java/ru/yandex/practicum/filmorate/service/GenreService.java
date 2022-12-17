@@ -21,7 +21,7 @@ public class GenreService {
     }
 
     public Genre getById(int genreId) {
-        genreStorage.checkGenreInDb(genreId);
+        genreStorage.checkGenre(genreId);
 
         return genreStorage.getById(genreId);
     }

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Slf4j
-@Repository
+@Repository("userDbStorage")
 public class UserDbStorage implements UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
@@ -46,29 +46,25 @@ public class UserDbStorage implements UserStorage {
         int userId = Objects.requireNonNull(keyHolder.getKey()).intValue();
         user.setId(userId);
 
-        return getData(userId);
+        return user;
     }
 
     @Override
     public User update(User user, int userId) {
-        if (getData(userId) == null) {
-            return null;
-        }
-
         jdbcTemplate.update(UserSqlQueries.UPDATE_USER, user.getName(), user.getEmail(),
                 user.getLogin(), user.getBirthday(), userId);
 
         user.setId(userId);
 
-        return getData(userId);
+        return user;
     }
 
     @Override
-    public User removeData(int userId) {
-        User removedUser = getData(userId);
-        jdbcTemplate.update(UserSqlQueries.REMOVE_USER, userId);
-
-        return removedUser;
+    public void removeData(int userId) {
+        if (jdbcTemplate.update(UserSqlQueries.REMOVE_USER, userId) == 0) {
+            log.warn("ID - {} does not exist", userId);
+            throw new NotFoundException("Film with ID: " + userId + " not found");
+        }
     }
 
     @Override
@@ -130,8 +126,9 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public void checkUserInDb(int userId) {
+    public void checkUser(int userId) {
         if (getData(userId) == null) {
+            log.warn("ID - {} does not exist", userId);
             throw new NotFoundException("User with ID: " + userId + " not found");
         }
     }

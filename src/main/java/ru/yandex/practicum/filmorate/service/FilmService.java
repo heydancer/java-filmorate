@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -20,8 +21,9 @@ public class FilmService {
     private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage storage, UserStorage userStorage) {
-        this.filmStorage = storage;
+    public FilmService(@Qualifier("filmDbStorage") FilmStorage filmStorage,
+                       @Qualifier("userDbStorage") UserStorage userStorage) {
+        this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
 
@@ -30,21 +32,21 @@ public class FilmService {
     }
 
     public Film update(Film film, int filmId) {
-        filmStorage.checkFilmInDb(filmId);
+        filmStorage.checkFilm(filmId);
 
         return filmStorage.update(film, filmId);
     }
 
     public Film addLike(int filmId, int userId) {
-        filmStorage.checkFilmInDb(filmId);
-        userStorage.checkUserInDb(userId);
+        filmStorage.checkFilm(filmId);
+        userStorage.checkUser(userId);
 
         return filmStorage.addLike(filmId, userId);
 
     }
 
     public Film getById(int filmId) {
-        filmStorage.checkFilmInDb(filmId);
+        filmStorage.checkFilm(filmId);
 
         return filmStorage.getData(filmId);
     }
@@ -57,15 +59,13 @@ public class FilmService {
         return filmStorage.getAll();
     }
 
-    public Film removeById(int filmId) {
-        filmStorage.checkFilmInDb(filmId);
-
-        return filmStorage.removeData(filmId);
+    public void removeById(int filmId) {
+        filmStorage.removeData(filmId);
     }
 
     public Film removeLike(int filmId, int userId) {
-        filmStorage.checkFilmInDb(filmId);
-        userStorage.checkUserInDb(userId);
+        filmStorage.checkFilm(filmId);
+        userStorage.checkUser(userId);
 
         return filmStorage.removeLike(filmId, userId);
     }

@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,33 +21,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserStorageTest {
 
     private final UserDbStorage userDbStorage;
-    private User testUser;
-    private User testUser2;
-    private User testUser3;
-
-    @BeforeEach
-    public void createUsers() {
-        testUser = User.builder()
-                .name("Test user")
-                .login("tester")
-                .email("testuser@yandex.ru")
-                .birthday(LocalDate.of(1994, 4, 16))
-                .build();
-
-        testUser2 = User.builder()
-                .name("Test user2")
-                .login("tester2")
-                .email("testuser2@yandex.ru")
-                .birthday(LocalDate.of(1995, 3, 10))
-                .build();
-
-        testUser3 = User.builder()
-                .name("Test user3")
-                .login("tester3")
-                .email("testuser3@yandex.ru")
-                .birthday(LocalDate.of(1998, 1, 3))
-                .build();
-    }
+    private final User testUser = User.builder()
+            .name("Test user")
+            .login("tester")
+            .email("testuser@yandex.ru")
+            .birthday(LocalDate.of(1994, 4, 16))
+            .build();
+    private final User testUser2 = User.builder()
+            .name("Test user2")
+            .login("tester2")
+            .email("testuser2@yandex.ru")
+            .birthday(LocalDate.of(1995, 3, 10))
+            .build();
+    private final User testUser3 = User.builder()
+            .name("Test user3")
+            .login("tester3")
+            .email("testuser3@yandex.ru")
+            .birthday(LocalDate.of(1998, 1, 3))
+            .build();
 
     @Test
     public void shouldCreateUser() {

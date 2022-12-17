@@ -86,7 +86,7 @@ class FilmStorageTest {
         Film film = filmDbStorage.add(testFilm);
 
         assertThat(filmDbStorage.getData(film.getId())).isNotNull();
-        assertThat(filmDbStorage.getData(film.getId())).isEqualTo(film);
+        assertThat(filmDbStorage.getData(film.getId()).getName()).isEqualTo(film.getName());
     }
 
     @Test
@@ -117,7 +117,9 @@ class FilmStorageTest {
         filmDbStorage.addLike(filmWithLike.getId(), user.getId());
 
         assertThat(filmDbStorage.getPopular(2)).hasSize(2);
-        assertThat(filmDbStorage.getPopular(2).get(0)).isEqualTo(filmWithLike);
-        assertThat(filmDbStorage.getPopular(2).get(1)).isEqualTo(filmWithoutLike);
+        assertThat(filmDbStorage.getPopular(2)
+                .get(0).getName()).isEqualTo(filmWithLike.getName());
+        assertThat(filmDbStorage.getPopular(2)
+                .get(1).getName()).isEqualTo(filmWithoutLike.getName());
     }
 }

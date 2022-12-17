@@ -22,7 +22,7 @@ public class MpaService {
     }
 
     public Mpa getById(int mpaId) {
-        mpaStorage.checkMpaInDb(mpaId);
+        mpaStorage.checkMpa(mpaId);
 
         return mpaStorage.getById(mpaId);
     }

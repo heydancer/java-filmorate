@@ -80,10 +80,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public User deleteUser(@PathVariable int id) {
+    public void deleteUser(@PathVariable int id) {
         log.info("User with id: {} removing", id);
-
-        return service.removeUser(id);
+        service.removeUser(id);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")

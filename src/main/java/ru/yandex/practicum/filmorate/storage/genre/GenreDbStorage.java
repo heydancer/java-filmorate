@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class GenreDbStorage implements GenreStorage {
@@ -24,11 +23,7 @@ public class GenreDbStorage implements GenreStorage {
 
     @Override
     public Genre getById(int genreId) {
-        try {
-            return jdbcTemplate.queryForObject(GenreSqlQueries.GET_GENRE, this::mapRow, genreId);
-        } catch (DataAccessException exception) {
-            return null;
-        }
+        return jdbcTemplate.queryForObject(GenreSqlQueries.GET_GENRE, this::mapRow, genreId);
     }
 
     @Override
@@ -42,8 +37,10 @@ public class GenreDbStorage implements GenreStorage {
     }
 
     @Override
-    public void checkGenreInDb(int genreId) {
-        if (getById(genreId) == null) {
+    public void checkGenre(int genreId) {
+        try {
+            jdbcTemplate.queryForObject(GenreSqlQueries.GET_GENRE, this::mapRow, genreId);
+        } catch (DataAccessException exception) {
             throw new NotFoundException("Genre with ID: " + genreId + " not found");
         }
     }

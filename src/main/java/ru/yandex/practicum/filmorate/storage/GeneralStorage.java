@@ -7,7 +7,7 @@ public interface GeneralStorage<T> {
 
     T update(final T data, final int id);
 
-    T removeData(final int id);
+    void removeData(final int id);
 
     T getData(final int id);
 

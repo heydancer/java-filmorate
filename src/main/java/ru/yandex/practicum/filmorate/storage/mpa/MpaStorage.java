@@ -10,5 +10,5 @@ public interface MpaStorage {
 
     List<Mpa> getAll();
 
-    void checkMpaInDb(int mpaId);
+    void checkMpa(int mpaId);
 }

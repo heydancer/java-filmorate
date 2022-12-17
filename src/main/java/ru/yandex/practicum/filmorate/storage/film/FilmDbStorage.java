@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +22,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Repository
+@Slf4j
+@Repository("filmDbStorage")
 public class FilmDbStorage implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
@@ -53,30 +55,26 @@ public class FilmDbStorage implements FilmStorage {
         film.setId(filmId);
         updateGenres(film);
 
-        return getData(filmId);
+        return film;
     }
 
     @Override
     public Film update(Film film, int filmId) {
-        if (getData(filmId) == null) {
-            return null;
-        }
-
         jdbcTemplate.update(FilmSqlQueries.UPDATE_FILM, film.getName(), film.getDescription(),
                 film.getReleaseDate(), film.getDuration(), film.getMpa().getId(), filmId);
 
         film.setId(filmId);
         updateGenres(film);
 
-        return getData(filmId);
+        return film;
     }
 
     @Override
-    public Film removeData(int filmId) {
-        Film removedFilm = getData(filmId);
-        jdbcTemplate.update(FilmSqlQueries.REMOVE_FILM, filmId);
-
-        return removedFilm;
+    public void removeData(int filmId) {
+        if (jdbcTemplate.update(FilmSqlQueries.REMOVE_FILM, filmId) == 0) {
+            log.warn("ID - {} does not exist", filmId);
+            throw new NotFoundException("Film with ID: " + filmId + " not found");
+        }
     }
 
     @Override
@@ -114,8 +112,9 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public void checkFilmInDb(int filmId) {
+    public void checkFilm(int filmId) {
         if (getData(filmId) == null) {
+            log.warn("ID - {} does not exist", filmId);
             throw new NotFoundException("Film with ID: " + filmId + " not found");
         }
     }
