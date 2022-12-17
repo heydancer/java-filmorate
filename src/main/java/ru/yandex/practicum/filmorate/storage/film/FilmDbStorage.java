@@ -55,6 +55,8 @@ public class FilmDbStorage implements FilmStorage {
         film.setId(filmId);
         updateGenres(film);
 
+        film.setGenres(genreStorage.getAllByFilmId(filmId));
+
         return film;
     }
 
@@ -65,6 +67,8 @@ public class FilmDbStorage implements FilmStorage {
 
         film.setId(filmId);
         updateGenres(film);
+
+        film.setGenres(genreStorage.getAllByFilmId(filmId));
 
         return film;
     }
