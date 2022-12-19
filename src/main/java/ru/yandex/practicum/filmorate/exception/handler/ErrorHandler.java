@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.controller.FilmController;
+import ru.yandex.practicum.filmorate.controller.GenreController;
+import ru.yandex.practicum.filmorate.controller.MpaController;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -14,7 +16,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import java.util.Objects;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {FilmController.class, UserController.class})
+@RestControllerAdvice(assignableTypes = {FilmController.class, UserController.class, MpaController.class, GenreController.class})
 public class ErrorHandler {
 
     @ExceptionHandler
@@ -44,7 +46,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleOtherException(final Exception exception) {
-        log.error("Internal error {}", exception.getMessage());
+        log.error("Internal error {}", exception.getMessage(), exception);
 
         return new ErrorResponse("INTERNAL SERVER ERROR", exception.getMessage());
     }
